@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
 
-    await connectDB();
+    await connectDB(process.env.MONGODB_URI);
 
     app.listen(PORT, () => {
 

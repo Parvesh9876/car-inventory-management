@@ -1,27 +1,15 @@
-/**
- * db.js
- *
- * Responsible for connecting the application
- * to MongoDB.
- */
-
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
-    try {
+const connectDB = async (uri) => {
+  try {
+    await mongoose.connect(uri);
 
-        await mongoose.connect(process.env.MONGODB_URI);
-
-        console.log("✅ MongoDB Connected");
-
-    } catch (error) {
-
-        console.error("❌ Database Connection Failed");
-
-        console.error(error.message);
-
-        process.exit(1);
-    }
+    console.log("✅ MongoDB Connected");
+  } catch (error) {
+    console.error("❌ MongoDB Connection Failed");
+    console.error(error.message);
+    process.exit(1);
+  }
 };
 
 module.exports = connectDB;
