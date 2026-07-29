@@ -354,7 +354,6 @@ A dedicated test configuration was established with database cleanup and connect
 ### Prompt
 
 > Diagnose Jest hooks timing out while connecting to MongoDB Atlas.
->
 > Determine whether the problem is related to Jest timeout configuration, MongoDB connectivity, environment variables, or Atlas network access.
 >
 > Avoid hiding genuine connection errors by only increasing the timeout.

@@ -5,6 +5,63 @@ A full-stack dealership inventory management application built with the MERN sta
 The backend follows a layered architecture and was developed using Test-Driven Development (TDD) practices for critical business functionality.
 
 ---
+## 🌐 Live Demo
+
+The application is deployed and available at:
+
+**Live Application:**  
+https://cardealership-12.netlify.app/login
+
+---
+
+## 🔐 Demo Credentials
+
+### Administrator Account
+
+Use the following credentials to explore the **Admin Dashboard** and inventory management features.
+
+| Field | Value |
+|---|---|
+| **Email** | `admin@gmail.com` |
+| **Password** | `password123` |
+| **Role** | Administrator |
+
+The administrator can:
+
+- Add new vehicles
+- Edit vehicle details
+- Delete vehicles
+- Restock inventory
+- Search and filter vehicles
+- Purchase vehicles
+- View and manage the complete inventory
+
+---
+
+### Customer / Normal User
+
+A separate demo account is **not required** for customer access.
+
+To test the application as a normal user:
+
+1. Open the application.
+2. Navigate to **Register**.
+3. Create a new account using your own test credentials.
+4. The newly created account will automatically be assigned the **User/Customer** role.
+5. Log in using the newly created account.
+
+Normal users can:
+
+- Browse available vehicles
+- Search vehicles by make or model
+- Filter vehicles by category and price
+- View vehicle availability
+- Purchase vehicles
+
+Normal users **cannot** add, edit, delete, or restock vehicles.
+
+---
+
 
 ## Table of Contents
 
