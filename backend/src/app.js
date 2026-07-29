@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const errorHandler = require("./middlewares/error.middleware");
 
 const authRoutes = require("./routes/auth.routes");
 
@@ -20,5 +21,6 @@ app.get("/health", (req, res) => {
     message: "Server is running",
   });
 });
+app.use(errorHandler);
 
 module.exports = app;

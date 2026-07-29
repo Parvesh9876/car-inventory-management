@@ -35,6 +35,49 @@ const register = async (userData) => {
   
 };
 
+
+/**
+ * Login an existing user.
+ *
+ * 1. Find user by email
+ * 2. Compare provided password with stored hash
+ * 3. Generate JWT
+ * 4. Return user and token
+ */
+const login = async (userData) => {
+  const { email, password } = userData;
+
+  // Find the user using their email
+  const user = await User.findOne({ email });
+
+  // Do not reveal whether email or password was wrong.
+  if (!user) {
+    const error = new Error("Invalid email or password");
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Compare plain password with hashed password stored in MongoDB
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    user.password
+  );
+
+  if (!isPasswordValid) {
+    const error = new Error("Invalid email or password");
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Generate authentication token
+  const token = generateToken(user);
+
+  return {
+    user,
+    token,
+  };
+};
 module.exports = {
     register,
+    login,
 };
