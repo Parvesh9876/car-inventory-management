@@ -8,6 +8,8 @@ const authorizeAdmin = require("../middlewares/admin.middleware");
 
 const {
   createVehicleValidator,
+    searchVehicleValidator,
+    updateVehicleValidator
 } = require("../validators/vehicle.validator");
 
 const router = express.Router();
@@ -37,6 +39,28 @@ router.get(
   "/",
   authenticate,
   vehicleController.getAllVehicles
+);
+
+router.get(
+  "/search",
+  authenticate,
+  searchVehicleValidator,
+  validate,
+  vehicleController.searchVehicles
+);
+router.put(
+  "/:id",
+  authenticate,
+  authorizeAdmin,
+  updateVehicleValidator,
+  validate,
+  vehicleController.updateVehicle
+);
+router.delete(
+  "/:id",
+  authenticate,
+  authorizeAdmin,
+  vehicleController.deleteVehicle
 );
 
 module.exports = router;
