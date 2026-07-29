@@ -1259,31 +1259,49 @@ npm test
 
 # 25. Deployment
 
-The application is deployed using separate frontend, backend, and database services.
+The application is deployed using separate cloud services for the frontend, backend, and database.
+
+## Deployment Architecture
 
 ```text
-                Internet
-                   │
-                   ▼
-          ┌──────────────────┐
-          │     Netlify      │
-          │ React Frontend   │
-          └────────┬─────────┘
-                   │
-                   │ HTTPS
-                   ▼
-          ┌──────────────────┐
-          │   Backend API    │
-          │ Node + Express   │
-          └────────┬─────────┘
-                   │
-                   ▼
-          ┌──────────────────┐
-          │  MongoDB Atlas   │
-          └──────────────────┘
+                 User / Browser
+                       │
+                       │ HTTPS
+                       ▼
+              ┌─────────────────┐
+              │     Netlify     │
+              │                 │
+              │ React + Vite    │
+              │    Frontend     │
+              └────────┬────────┘
+                       │
+                       │ REST API / HTTPS
+                       │ JWT Authentication
+                       ▼
+              ┌─────────────────┐
+              │      Render     │
+              │                 │
+              │ Node.js         │
+              │ Express.js      │
+              │ Backend API     │
+              └────────┬────────┘
+                       │
+                       │ Mongoose
+                       ▼
+              ┌─────────────────┐
+              │  MongoDB Atlas  │
+              │                 │
+              │ Cloud Database  │
+              └─────────────────┘
 ```
 
-## Netlify Frontend Configuration
+---
+
+## Frontend Deployment — Netlify
+
+The React/Vite frontend is deployed on **Netlify**.
+
+### Netlify Build Configuration
 
 ```text
 Base directory: frontend
@@ -1291,13 +1309,133 @@ Build command:  npm run build
 Publish:        dist
 ```
 
-The production frontend receives the backend address through:
+The production frontend communicates with the deployed Render backend using an environment variable.
+
+```env
+VITE_API_URL=https://your-render-backend-url.onrender.com
+```
+
+The actual production backend URL should be configured through the Netlify environment settings rather than hardcoded throughout the frontend source code.
+
+---
+
+## Backend Deployment — Render
+
+The Node.js/Express REST API is deployed on **Render**.
+
+The Render service is responsible for running:
 
 ```text
-VITE_API_URL
+Node.js
+   │
+   ▼
+Express Application
+   │
+   ├── Authentication APIs
+   ├── Vehicle APIs
+   ├── Validation
+   ├── Authorization
+   └── Business Logic
+```
+
+### Render Configuration
+
+A typical Render configuration for this project is:
+
+```text
+Root Directory: backend
+Environment:    Node
+Build Command:  npm install
+Start Command:  npm start
+```
+
+The exact commands should match the scripts defined in `backend/package.json`.
+
+---
+
+## Backend Environment Variables
+
+The deployed backend requires environment variables such as:
+
+```env
+MONGODB_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_secure_jwt_secret
+NODE_ENV=production
+```
+
+Sensitive values are configured through the Render environment settings and should never be committed to the Git repository.
+
+---
+
+## Database Deployment — MongoDB Atlas
+
+MongoDB Atlas provides the cloud-hosted database used by the deployed Render backend.
+
+```text
+Render Backend
+      │
+      │ Mongoose
+      ▼
+MongoDB Atlas
+      │
+      ├── Users
+      └── Vehicles
+```
+
+The MongoDB connection string is provided to the backend using the `MONGODB_URI` environment variable.
+
+---
+
+## Production Request Flow
+
+A typical production request follows this path:
+
+```text
+1. User opens application
+            │
+            ▼
+2. Netlify serves React frontend
+            │
+            ▼
+3. React sends API request
+            │
+            ▼
+4. Render receives HTTP request
+            │
+            ▼
+5. Express middleware processes request
+            │
+            ├── Validation
+            ├── JWT Authentication
+            └── Role Authorization
+            │
+            ▼
+6. Controller calls Service
+            │
+            ▼
+7. Service communicates with MongoDB Atlas
+            │
+            ▼
+8. MongoDB returns data
+            │
+            ▼
+9. Render returns JSON response
+            │
+            ▼
+10. React updates the UI
 ```
 
 ---
+
+## Production Architecture Summary
+
+| Layer | Technology | Hosting |
+|---|---|---|
+| Frontend | React + Vite | Netlify |
+| Backend | Node.js + Express.js | Render |
+| Database | MongoDB | MongoDB Atlas |
+| Authentication | JWT | Backend |
+| Password Security | bcrypt | Backend |
 
 # 26. Live Application
 
@@ -1305,7 +1443,7 @@ The deployed frontend is available at:
 
 **Live Project:**
 
-https://cardealership-12.netlify.app/login
+https://cardealership-12.netlify.app
 
 ---
 
@@ -1578,10 +1716,8 @@ docs/
 ## Project Links
 
 **Live Application:**  
-https://cardealership-12.netlify.app/login
+https://cardealership-12.netlify.app
 
-**Repository:**  
-`<add-your-github-repository-url-here>`
 
 ---
 
