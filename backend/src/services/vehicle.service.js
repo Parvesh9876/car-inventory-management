@@ -39,8 +39,20 @@ const getAllVehicles = async () => {
  * - minPrice
  * - maxPrice
  */
+/**
+ * Search vehicles using optional filters.
+ *
+ * Supported filters:
+ * - search    -> searches make OR model
+ * - make      -> optional direct make search
+ * - model     -> optional direct model search
+ * - category
+ * - minPrice
+ * - maxPrice
+ */
 const searchVehicles = async (filters) => {
   const {
+    search,
     make,
     model,
     category,
@@ -51,7 +63,43 @@ const searchVehicles = async (filters) => {
   // MongoDB query object
   const query = {};
 
-  // Case-insensitive partial matching
+  /**
+   * General search.
+   *
+   * Example:
+   * search=Toyota
+   *
+   * Matches:
+   * make = Toyota
+   * OR
+   * model containing Toyota
+   *
+   * Example:
+   * search=Fortuner
+   *
+   * Matches model = Fortuner.
+   */
+  if (search) {
+    query.$or = [
+      {
+        make: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        model: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  /**
+   * Keep direct make/model filtering available
+   * in case the API is called directly.
+   */
   if (make) {
     query.make = {
       $regex: make,
@@ -66,6 +114,9 @@ const searchVehicles = async (filters) => {
     };
   }
 
+  /**
+   * Category filter.
+   */
   if (category) {
     query.category = {
       $regex: category,
@@ -73,7 +124,9 @@ const searchVehicles = async (filters) => {
     };
   }
 
-  // Build price range only when provided
+  /**
+   * Price range filter.
+   */
   if (minPrice !== undefined || maxPrice !== undefined) {
     query.price = {};
 
@@ -86,6 +139,11 @@ const searchVehicles = async (filters) => {
     }
   }
 
+  /**
+   * Execute MongoDB query.
+   *
+   * Newest vehicles appear first.
+   */
   const vehicles = await Vehicle.find(query).sort({
     createdAt: -1,
   });

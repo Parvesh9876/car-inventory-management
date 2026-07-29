@@ -34,15 +34,69 @@ const createVehicleValidator = [
 ];
 
 const searchVehicleValidator = [
+  /**
+   * General make/model search.
+   */
+  query("search")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage(
+      "Search must not exceed 100 characters"
+    ),
+
+  /**
+   * Direct make filter.
+   */
+  query("make")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage(
+      "Make must not exceed 100 characters"
+    ),
+
+  /**
+   * Direct model filter.
+   */
+  query("model")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage(
+      "Model must not exceed 100 characters"
+    ),
+
+  /**
+   * Category filter.
+   */
+  query("category")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage(
+      "Category must not exceed 100 characters"
+    ),
+
+  /**
+   * Minimum price.
+   */
   query("minPrice")
     .optional()
     .isFloat({ min: 0 })
-    .withMessage("Minimum price must be a non-negative number"),
+    .withMessage(
+      "Minimum price must be a non-negative number"
+    ),
 
+  /**
+   * Maximum price.
+   */
   query("maxPrice")
     .optional()
     .isFloat({ min: 0 })
-    .withMessage("Maximum price must be a non-negative number"),
+    .withMessage(
+      "Maximum price must be a non-negative number"
+    ),
 ];
 
 /**
