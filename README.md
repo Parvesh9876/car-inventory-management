@@ -10,7 +10,7 @@ The backend follows a layered architecture and was developed using Test-Driven D
 The application is deployed and available at:
 
 **Live Application:**  
-https://cardealership-12.netlify.app/login
+https://cardealership-12.netlify.app
 
 ---
 
