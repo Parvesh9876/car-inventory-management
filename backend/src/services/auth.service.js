@@ -6,6 +6,7 @@
 
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const generateToken = require("../utils/generateToken");
 
 const register = async (userData) => {
     const { name, email, password } = userData;
@@ -25,8 +26,13 @@ const register = async (userData) => {
         password: hashedPassword, // Use the hashed password
         role: "user",
     });
+    const token = generateToken(user);
 
-    return user;
+    return {
+        user,
+        token,
+    };
+  
 };
 
 module.exports = {

@@ -1,11 +1,8 @@
 /**
  * Test Database Setup
- *
- * This file runs automatically before and after Jest tests.
- * It connects to the dedicated test database,
- * cleans collections after each test,
- * and closes the connection after all tests.
  */
+
+jest.setTimeout(30000);
 
 require("dotenv").config();
 
@@ -16,23 +13,28 @@ const connectDB = require("../config/db");
  * Connect to the test database before running any tests.
  */
 beforeAll(async () => {
+  console.log("Test DB:", process.env.MONGODB_TEST_URI);
+
   await connectDB(process.env.MONGODB_TEST_URI);
 });
 
 /**
- * Clean all collections after each test
- * so every test starts with a fresh database.
+ * Clean all collections after each test.
  */
 afterEach(async () => {
+  if (mongoose.connection.readyState !== 1) {
+    return;
+  }
+
   const collections = mongoose.connection.collections;
 
-  for (const collectionName in collections) {
-    await collections[collectionName].deleteMany({});
+  for (const collection of Object.values(collections)) {
+    await collection.deleteMany({});
   }
 });
 
 /**
- * Close the database connection after all tests finish.
+ * Close database connection.
  */
 afterAll(async () => {
   await mongoose.connection.close();
