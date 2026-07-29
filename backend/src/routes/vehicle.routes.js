@@ -9,7 +9,8 @@ const authorizeAdmin = require("../middlewares/admin.middleware");
 const {
   createVehicleValidator,
     searchVehicleValidator,
-    updateVehicleValidator
+    updateVehicleValidator,
+    restockVehicleValidator
 } = require("../validators/vehicle.validator");
 
 const router = express.Router();
@@ -62,5 +63,17 @@ router.delete(
   authorizeAdmin,
   vehicleController.deleteVehicle
 );
-
+router.post(
+  "/:id/purchase",
+  authenticate,
+  vehicleController.purchaseVehicle
+);
+router.post(
+  "/:id/restock",
+  authenticate,
+  authorizeAdmin,
+  restockVehicleValidator,
+  validate,
+  vehicleController.restockVehicle
+);
 module.exports = router;

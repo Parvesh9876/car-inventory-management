@@ -85,6 +85,43 @@ const deleteVehicle = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * Purchase Vehicle Controller
+ */
+const purchaseVehicle = async (req, res, next) => {
+  try {
+    const vehicle = await vehicleService.purchaseVehicle(
+      req.params.id
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Vehicle purchased successfully",
+      data: vehicle,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+/**
+ * Restock Vehicle Controller
+ */
+const restockVehicle = async (req, res, next) => {
+  try {
+    const vehicle = await vehicleService.restockVehicle(
+      req.params.id,
+      Number(req.body.quantity)
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Vehicle restocked successfully",
+      data: vehicle,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   createVehicle,
@@ -92,4 +129,6 @@ module.exports = {
     searchVehicles,
     updateVehicle,
     deleteVehicle,
+    purchaseVehicle,
+    restockVehicle,
 };

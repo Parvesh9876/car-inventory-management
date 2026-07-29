@@ -15,7 +15,7 @@ const authorizeAdmin = (req, res, next) => {
   }
 
   // User is authenticated but does not have admin privileges.
-  if (req.user.role !== "Admin") {
+  if (req.user.role !== "admin") {
     return res.status(403).json({
       success: false,
       message: "Admin access required",
