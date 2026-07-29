@@ -5,6 +5,9 @@ const vehicleController = require("../controllers/vehicle.controller");
 const authenticate = require("../middlewares/auth.middleware");
 const validate = require("../middlewares/validate.middleware");
 const authorizeAdmin = require("../middlewares/admin.middleware");
+const validateObjectId = require(
+  "../middlewares/validateObjectId.middleware"
+);
 
 const {
   createVehicleValidator,
@@ -54,6 +57,7 @@ router.put(
   authenticate,
   authorizeAdmin,
   updateVehicleValidator,
+  validateObjectId,
   validate,
   vehicleController.updateVehicle
 );
@@ -61,11 +65,13 @@ router.delete(
   "/:id",
   authenticate,
   authorizeAdmin,
+  validateObjectId,
   vehicleController.deleteVehicle
 );
 router.post(
   "/:id/purchase",
   authenticate,
+  validateObjectId,
   vehicleController.purchaseVehicle
 );
 router.post(
@@ -73,6 +79,7 @@ router.post(
   authenticate,
   authorizeAdmin,
   restockVehicleValidator,
+  validateObjectId,
   validate,
   vehicleController.restockVehicle
 );

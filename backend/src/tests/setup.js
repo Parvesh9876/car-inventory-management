@@ -13,7 +13,7 @@ const connectDB = require("../config/db");
  * Connect to the test database before running any tests.
  */
 beforeAll(async () => {
-  console.log("Test DB:", process.env.MONGODB_TEST_URI);
+  
 
   await connectDB(process.env.MONGODB_TEST_URI);
 });
