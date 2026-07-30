@@ -508,8 +508,8 @@ Backend behavior was checked with Jest and Supertest.
 At one development checkpoint:
 
 ```text
-Test Suites: 4 passed
-Tests:       15 passed
+Test Suites: 5 passed
+Tests:       25 passed
 ```
 
 ### Manual Testing
