@@ -369,7 +369,7 @@ For architecture, API design, database design, authentication, authorization, te
 
 AI-assisted development details are documented separately in:
 
-### 🤖 [AI-Assisted Development Log](./PROMPTS.md)
+### 🤖 [AI-Assisted Development Log](./PROMPT.md)
 
 ---
 
